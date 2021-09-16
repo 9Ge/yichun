@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A07EquipmentMaintenance.mapper.A07TbEquipmentMaintenanceMapper">
+    <resultMap id="BaseResultMap" type="com.enercomn.web.A07EquipmentMaintenance.bean.A07EquipmentMaintenanceVo">
+        <id column="maintenance_id" jdbcType="VARCHAR" property="maintenanceId"/>
+        <result column="project" jdbcType="VARCHAR" property="project"/>
+        <result column="standard" jdbcType="VARCHAR" property="standard"/>
+        <result column="method" jdbcType="VARCHAR" property="method"/>
+        <result column="week" jdbcType="VARCHAR" property="week"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="tei_id" jdbcType="VARCHAR" property="teiId"/>
+        <result column="people_num" jdbcType="INTEGER" property="peopleNum"/>
+        <result column="hour" jdbcType="INTEGER" property="hour"/>
+        <result column="tool" jdbcType="VARCHAR" property="tool"/>
+        <result column="demand" jdbcType="VARCHAR" property="demand"/>
+        <result column="is_down" jdbcType="INTEGER" property="isDown"/>
+        <result column="is_maker" jdbcType="INTEGER" property="isMaker"/>
+        <result column="is_equipment_parts" jdbcType="INTEGER" property="isEquipmentParts"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="is_need_material" jdbcType="INTEGER" property="isNeedMaterial"/>
+        <result column="equipment_code" jdbcType="INTEGER" property="equipmentCode"/>
+        <result column="equipment_name" jdbcType="INTEGER" property="equipmentName"/>
+        <result column="module_unit" jdbcType="INTEGER" property="moduleUnit"/>
+        <result column="maintenance_parts" jdbcType="INTEGER" property="maintenanceParts"/>
+        <result column="maintenance_projects" jdbcType="INTEGER" property="maintenanceProjects"/>
+        <result column="tb_equipment_assets_id" jdbcType="VARCHAR" property="tbEquipmentAssetsId"/>
+        <result column="tb_equipment_param_id" jdbcType="VARCHAR" property="tbEquipmentParamId"/>
+        <result column="maintenance_code" jdbcType="VARCHAR" property="maintenanceCode"/>
+        <collection property="relationList"
+                    ofType="com.enercomn.web.A07EquipmentMaintenance.bean.A07TbEquipmentMaintenanceMaterialRelation">
+            <result column="tb_equipment_material_id" jdbcType="VARCHAR" property="tbEquipmentMaterialId"/>
+            <result column="material_num" jdbcType="INTEGER" property="materialNum"/>
+            <result column="material_name" jdbcType="INTEGER" property="materialName"/>
+            <result column="material_code" jdbcType="INTEGER" property="materialCode"/>
+            <result column="relation_maintenance_id" jdbcType="VARCHAR" property="maintenanceId"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryEquipmentAndMaterial"
+            resultMap="BaseResultMap"
+            parameterType="com.enercomn.web.A07EquipmentMaintenance.bean.A07TbEquipmentMaintenance">
+        select
+        tb_equipment_maintenance.maintenance_code,
+        tb_equipment_maintenance.maintenance_id,tb_equipment_maintenance.tb_equipment_assets_id,
+        tb_equipment_maintenance.tb_equipment_param_id,tb_equipment_maintenance.project,tb_equipment_maintenance.is_need_material,
+        tb_equipment_maintenance.standard,tb_equipment_maintenance.method,
+        tb_equipment_maintenance.week,tb_equipment_maintenance.start_time,
+        tb_equipment_maintenance.tei_id,tb_equipment_maintenance.people_num,
+        tb_equipment_maintenance.hour,tb_equipment_maintenance.tool,
+        tb_equipment_maintenance.demand,tb_equipment_maintenance.is_down,
+        tb_equipment_maintenance.is_maker,tb_equipment_maintenance.is_equipment_parts,
+        tb_equipment_maintenance.remarks,
+        tb_equipment_maintenance_material_relation.tb_equipment_material_id,
+        tb_equipment_maintenance_material_relation.maintenance_id as relation_maintenance_id,
+        tb_equipment_maintenance_material_relation.material_num,
+        tb_equipment_material.name as material_name,tb_equipment_material.code as material_code,
+        ass.equipment_code as equipment_code,ass.equipment_name,
+        tb_equipment_param.module_unit,tb_equipment_param.maintenance_parts,
+        tb_equipment_param.maintenance_projects
+        from
+        tb_equipment_maintenance
+        left join tb_equipment_maintenance_material_relation
+        on tb_equipment_maintenance_material_relation.maintenance_id=tb_equipment_maintenance.maintenance_id
+        left join tb_equipment_material
+        on tb_equipment_material.material_id=tb_equipment_maintenance_material_relation.tb_equipment_material_id
+        and tb_equipment_material.is_del='0'
+        left join tb_equipment_assets ass
+        on tb_equipment_maintenance.tb_equipment_assets_id=ass.tea_id and ass.is_del='0'
+        left join tb_equipment_param
+        on tb_equipment_param.teps_id=tb_equipment_maintenance.tb_equipment_param_id and tb_equipment_param.is_del='0'
+        where tb_equipment_maintenance.is_del = '0'
+        <if test="project != null and project != ''">
+            and tb_equipment_assets.project like #{project}
+        </if>
+        <if test="maintenanceCode != null and maintenanceCode != ''">
+            and tb_equipment_maintenance.maintenance_code like #{maintenanceCode}
+        </if>
+
+    </select>
+
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A06EquipmentMaterial.mapper.A06TbEquipmentMaterialMapperTk">
+
+        <select id="queryMaterial" parameterType="com.enercomn.web.A06EquipmentMaterial.bean.A06TbEquipmentMaterial"
+                resultType="java.util.Map">
+           select material_id,code ,name from tb_equipment_material
+           <where>
+               is_del=0
+           </where>
+        </select>
+
+
+</mapper>

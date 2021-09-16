@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A10CheckPlan.mapper.A10TbEquipmentCheckPlanMapper">
+    <select id="queryCheckPlan" parameterType="com.enercomn.web.A10CheckPlan.bean.A10TbEquipmentCheckPlan"
+            resultType="com.enercomn.web.A10CheckPlan.bean.A10TbEquipmentCheckPlanVo">
+        select
+            tb_equipment_check_plan.tecp_id,tb_equipment_check_plan.tb_equipment_param_id,
+            tb_equipment_check_plan.equipment_id,tb_equipment_check_plan.tra_id,
+            tb_equipment_check_plan.place,tb_equipment_check_plan.type,
+            tb_equipment_check_plan.position,tb_equipment_check_plan.check_content,
+            tb_equipment_check_plan.safety_precautions,tb_equipment_check_plan.demand_tool,
+            tb_equipment_check_plan.demand_kinetic_energy,tb_equipment_check_plan.demand_down,
+            tb_equipment_check_plan.dol_support,tb_equipment_check_plan.plan_date,
+            tb_equipment_check_plan.plan_from,tb_equipment_check_plan.status,
+            tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,
+            tb_equipment_param.module_unit,tb_equipment_param.maintenance_parts,tb_equipment_param.maintenance_projects,
+        tb_equipment_check_plan.plan_code, tb_equipment_check_plan.plan_from_code
+        from tb_equipment_check_plan
+        left join tb_equipment_assets on tb_equipment_check_plan.equipment_id=tb_equipment_assets.tea_id and tb_equipment_assets.is_del=0
+        left join tb_equipment_param on tb_equipment_param.teps_id=tb_equipment_check_plan.tb_equipment_param_id and tb_equipment_param.is_del=0
+        where tb_equipment_check_plan.is_del=0
+        <if test="equipmentCode != null and equipmentCode != ''">
+            and tb_equipment_assets.equipment_code like #{equipmentCode}
+        </if>
+        <if test="equipmentName != null and equipmentName != ''">
+            and tb_equipment_assets.equipment_name like #{equipmentName}
+        </if>
+    </select>
+
+    <insert id="batchSaveCheckPlan" parameterType="java.util.List">
+        insert into tb_equipment_check_plan ( tb_equipment_param_id,tecp_id,equipment_id, tra_id,
+        place, `type`, `position`,
+        check_content, safety_precautions, demand_tool,
+        demand_kinetic_energy, demand_down, dol_support,
+        plan_date, plan_from,plan_from_id, `status`,
+        create_user, create_date, update_user,
+        update_date, is_del,plan_from_code,plan_code)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            ( #{item.tbEquipmentParamId,jdbcType=VARCHAR},#{item.tecpId,jdbcType=VARCHAR},#{item.equipmentId,jdbcType=VARCHAR}, #{item.traId,jdbcType=VARCHAR},
+            #{item.place,jdbcType=VARCHAR}, #{item.type,jdbcType=INTEGER}, #{item.position,jdbcType=VARCHAR},
+            #{item.checkContent,jdbcType=VARCHAR}, #{item.safetyPrecautions,jdbcType=VARCHAR},
+            #{item.demandTool,jdbcType=VARCHAR},
+            #{item.demandKineticEnergy,jdbcType=VARCHAR}, #{item.demandDown,jdbcType=VARCHAR},
+            #{item.dolSupport,jdbcType=VARCHAR},
+            #{item.planDate,jdbcType=TIMESTAMP}, #{item.planFrom,jdbcType=VARCHAR}, #{item.planFromId,jdbcType=VARCHAR}, #{item.status,jdbcType=VARCHAR},
+            #{item.createUser,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateUser,jdbcType=VARCHAR},
+            #{item.updateDate,jdbcType=TIMESTAMP}, #{item.isDel,jdbcType=INTEGER}, #{item.planFromCode,jdbcType=INTEGER}, #{item.planCode,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+</mapper>

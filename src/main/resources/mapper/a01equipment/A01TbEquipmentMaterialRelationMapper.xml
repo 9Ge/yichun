@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A01EquipmentManagement.mapper.A01TbEquipmentMaterialRelationMapper">
+    <resultMap id="equipment" type="com.enercomn.web.A01EquipmentManagement.vo.A01EquipmentVo">
+        <result property="equipmentCode" column="equipment_code"/>
+        <result property="equipmentName" column="equipment_name"/>
+        <result property="equipmentModel" column="equipment_model"/>
+        <result property="department" column="department"/>
+        <result property="installaSit" column="installa_sit"/>
+        <collection property="a01MaterialVoList" ofType="com.enercomn.web.A01EquipmentManagement.vo.A01MaterialVo">
+            <result property="code" column="code"/>
+            <result property="name" column="name"/>
+            <result property="type" column="type"/>
+            <result property="brand" column="brand"/>
+            <result property="tbEquipmentAssetsId" column="tb_equipment_assets_id"/>
+            <result property="capacity" column="capacity"/>
+            <result property="unit" column="unit"/>
+        </collection>
+    </resultMap>
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into tb_equipment_material_relation ( relation_id,tb_equipment_assets_id, material_id,
+        capacity, unit)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.relationId,jdbcType=VARCHAR}, #{item.tbEquipmentAssetsId,jdbcType=VARCHAR},
+             #{item.materialId,jdbcType=VARCHAR},
+            #{item.capacity,jdbcType=VARCHAR}, #{item.unit,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+    <select id="queryEquipmentByTeaId" resultMap="equipment" parameterType="java.lang.String">
+        select
+            mater.code,mater.name,mater.type,mater.brand,rel.tb_equipment_assets_id ,
+            rel.capacity,rel.unit,
+            ass.equipment_code,ass.equipment_name,ass.equipment_model,ass.department,ass.installa_site
+            from tb_equipment_material_relation rel
+            left join tb_equipment_material mater on rel.material_id=mater.material_id and mater.is_del=0
+            left join tb_equipment_assets ass on ass.tea_id=rel.tb_equipment_assets_id and ass.is_del=0
+            where  rel.is_del=0
+            <if test="teaId != null and teaId !=''">
+                and rel.tb_equipment_assets_id=#{teaId}
+            </if>
+
+    </select>
+</mapper>

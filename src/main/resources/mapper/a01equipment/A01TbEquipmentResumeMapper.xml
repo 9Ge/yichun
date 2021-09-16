@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A01EquipmentManagement.mapper.A01TbEquipmentResumeMapper">
+
+    <select id="queryResume" parameterType="com.enercomn.web.A01EquipmentManagement.bean.A01TbEquipmentResume" resultType="com.enercomn.web.A01EquipmentManagement.bean.A01TbEquipmentResume">
+       select
+            tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,
+            tb_equipment_resume.ter_id,tb_equipment_resume.date,tb_equipment_resume.maintenance_unit,
+            tb_equipment_resume.equipment_id,tb_equipment_resume.maintenance_part,tb_equipment_resume.type,
+            tb_equipment_resume.date_begin,tb_equipment_resume.date_end,tb_equipment_resume.hours,
+            tb_equipment_resume.down_date,tb_equipment_resume.fault_phenomenon,tb_equipment_resume.fault_reason,
+            tb_equipment_resume.maintenance_process,tb_equipment_resume.tei_id,
+            tb_equipment_resume.model_num,
+            tb_equipment_material.code material_code,tb_equipment_material.name as material_name,
+            tb_equipment_resume.tep_id, tb_equipment_resume.resume_source_code,
+            tb_equipment_resume.resume_source_id, tb_equipment_resume.resume_source
+        from tb_equipment_resume
+        left join tb_equipment_assets on tb_equipment_assets.tea_id=tb_equipment_resume.equipment_id
+        and tb_equipment_assets.is_del = 0
+        left join tb_equipment_material on tb_equipment_material.material_id= tb_equipment_resume.tep_id
+        and tb_equipment_material.is_del=0
+        <where>
+            tb_equipment_resume.is_del=0
+            <if test="equipmentCode != null and equipmentCode != ''">
+                and equipment_code like #{equipmentCode}
+            </if>
+            <if test="equipmentName != null and equipmentName != ''">
+                and equipment_name like #{equipmentName}
+            </if>
+        </where>
+
+    </select>
+</mapper>

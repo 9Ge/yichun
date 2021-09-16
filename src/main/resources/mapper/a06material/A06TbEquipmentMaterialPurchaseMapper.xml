@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A06EquipmentMaterial.mapper.A06TbEquipmentMaterialPurchaseMapper">
+
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into tb_equipment_material_purchase (purchase_id,pur_week, price, estimate_load_date,
+        actual_load_date, rate, material_id,
+        create_user, create_date, update_user,
+        update_date, is_del)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.purchaseId,jdbcType=VARCHAR}, #{item.purWeek,jdbcType=INTEGER}, #{item.price,jdbcType=DECIMAL}, #{item.estimateLoadDate,jdbcType=TIMESTAMP},
+            #{item.actualLoadDate,jdbcType=TIMESTAMP}, #{item.rate,jdbcType=VARCHAR}, #{item.materialId,jdbcType=VARCHAR},
+            #{item.createUser,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR},
+            #{item.updateDate,jdbcType=TIMESTAMP}, #{item.isDel,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+</mapper>

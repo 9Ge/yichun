@@ -1,0 +1,94 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /EfficientRoomService
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    #first:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://47.103.37.95:3307/enercomnsysdev?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Hongkong&allowMultiQueries=true
+
+    # mqtt测试数据
+   # url: jdbc:mysql://47.103.37.95:3307/enercomndevicd?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Hongkong&allowMultiQueries=true
+    url: jdbc:mysql://192.168.3.24:3306/enercomndeviced?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Hongkong&allowMultiQueries=true
+
+    #modbus测试数据
+    #url: jdbc:mysql://47.103.37.95:3307/enercomnmodbuspro?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Hongkong&allowMultiQueries=true
+    username: root
+    #password: enercomn2020
+    password: root
+#    second:
+#      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#      url: jdbc:sqlserver://192.168.3.178;instanceName=ESERVER;integratedSecurity=false;DataBaseName=eServer
+#      username: eServer
+#      password: Password
+    primary:
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validation-query: SELECT 1 FROM DUAL
+      time-between-eviction-runs-millis: 300000
+      min-evictable-idle-time-millis: 1800000
+      initial-size: 5
+      max-active: 50
+      max-wait: 60000
+      min-idle: 5
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  jackson:
+    serialization:
+      indent_output: true
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/, classpath:/resources/,classpath:/static/, classpath:/public/,file:${file.uploadUrl}
+cache:
+  type: ehcache
+  ehcache:
+    config: ehcache.xml
+
+  redis:
+    # Redis数据库索引（默认为0）
+    database: 1
+    # Redis服务器地址
+    host: 192.168.3.244
+    #host : 192.168.1.105
+    # Redis服务器连接端口
+    port: 6379
+    # Redis服务器连接密码（默认为空）
+    password:
+    pool:
+      #连接池最大连接数（使用负值表示没有限制）
+      max-active: 10
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: -1
+      # 连接池中的最大空闲连接
+      max-idle: 10
+      # 连接池中的最小空闲连接
+      min-idle: 0
+    # 连接超时时间（毫秒）
+    timeout: 30000
+
+logging:
+  file: EfficientRoomService.log
+  level:
+    root :  info
+
+
+file:
+  uploadUrl :  E:/upload/
+  codeImageUrl :  CodeImage
+
+# 公众号配置(必填)
+wx :
+  mp :
+    appId :  wxc24d7b12dffb4add
+    secret :  a5bc3142d75372ca632f67d69057ab42
+    token :  com.enercomn
+    aesKey :  com.enercomn
+

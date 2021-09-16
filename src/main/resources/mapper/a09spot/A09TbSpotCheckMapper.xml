@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A09SpotCheck.mapper.A09TbSpotCheckMapper">
+
+    <insert id="saveBatchCheck" parameterType="java.util.List">
+        insert into tb_spot_check (tsc_id, tb_equipment_assets_id, use_department, `position`, check_requirements,
+        methods_tool,
+        work_type, `date`, check_type, create_user, create_date, update_user, update_date,
+        is_del,check_status,check_code,source_id,source_code)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.tscId,jdbcType=VARCHAR},#{item.tbEquipmentAssetsId,jdbcType=VARCHAR},
+            #{item.useDepartment,jdbcType=VARCHAR},
+            #{item.position,jdbcType=VARCHAR}, #{item.checkRequirements,jdbcType=VARCHAR},
+            #{item.methodsTool,jdbcType=VARCHAR},
+            #{item.workType,jdbcType=VARCHAR}, #{item.date,jdbcType=TIMESTAMP}, #{item.checkType,jdbcType=INTEGER},
+            #{item.createUser,jdbcType=VARCHAR}, #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.updateUser,jdbcType=VARCHAR},
+            #{item.updateDate,jdbcType=TIMESTAMP}, #{item.isDel,jdbcType=INTEGER},0,#{item.checkCode},#{item.sourceId},#{item.sourceCode})
+        </foreach>
+
+    </insert>
+
+    <select id="querySpotCheck" parameterType="com.enercomn.web.A09SpotCheck.bean.A09TbSpotCheck"
+            resultType="com.enercomn.web.A09SpotCheck.bean.A09TbSpotCheck">
+        select
+            tb_equipment_assets.equipment_code as equipment_code ,tb_equipment_assets.equipment_name,
+            tb_equipment_assets.equipment_model,
+            tb_spot_check.tsc_id,tb_spot_check.tb_equipment_assets_id,
+            tb_spot_check.use_department,tb_spot_check.position,tb_spot_check.check_requirements,
+            tb_spot_check.methods_tool,tb_spot_check.work_type,tb_spot_check.date,tb_spot_check.check_type,
+            tb_spot_check.check_status,tb_spot_check.check_code,tb_spot_check.source_id,tb_spot_check.source_code
+        from
+            tb_spot_check
+        left join
+            tb_equipment_assets
+        on
+            tb_equipment_assets.tea_id = tb_spot_check.tb_equipment_assets_id
+        and
+            tb_equipment_assets.is_del=0
+        where
+            tb_spot_check.is_del=0
+        <if test="equipmentCode != null and equipmentCode != ''">
+            and tb_equipment_assets.equipment_code like #{equipmentCode}
+        </if>
+        <if test="equipmentName != null and equipmentName != ''">
+            and tb_equipment_assets.equipment_name like #{equipmentName}
+        </if>
+        <if test="checkStatus != null and checkStatus != ''">
+            and tb_spot_check.check_status = #{checkStatus}
+        </if>
+    </select>
+
+</mapper>

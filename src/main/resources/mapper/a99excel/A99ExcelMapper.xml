@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A99TableExcelCommon.mapper.A99ExcelMapper">
+    
+    <select id="conversion" resultType="java.lang.String" parameterType="com.enercomn.web.A99TableExcelCommon.vo.ConversionVo" >
+            select ${column} from ${byTable} where ${conditionsColumn}=#{conditionsValue} and is_del=0
+    </select>
+
+    <select id="execSql" resultType="java.lang.String" >
+          ${sql}
+    </select>
+</mapper>

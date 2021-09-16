@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A08EquipmentParam.mapper.A08TbEquipmentParamMapper">
+
+    <select id="queryEquipmentParam" parameterType="com.enercomn.web.A08EquipmentParam.bean.A08TbEquipmentParam"
+        resultType="com.enercomn.web.A08EquipmentParam.bean.A08TbEquipmentParam">
+        select
+            param.teps_id, assets.equipment_code as equipment_code, param.module_unit, param.maintenance_parts,
+            param.maintenance_projects,param.param_content, param.equipment_param, param.technology_param, param.is_check,
+            param.check_records, param.remarks,param.tb_equipment_assets_id
+        from
+            tb_equipment_param param
+        left join
+            tb_equipment_assets assets
+        on
+            param.tb_equipment_assets_id = assets.tea_id
+        and
+            assets.is_del=0
+        where
+            param.is_del=0
+        <if test="equipmentCode != null and equipmentCode != ''">
+            and tb_equipment_assets.equipment_code like #{equipmentCode}
+        </if>
+         <if test="moduleUnit != null and moduleUnit != ''">
+            and param.module_unit like #{moduleUnit}
+        </if>
+    </select>
+
+    <select id="paramSelect" parameterType="com.enercomn.web.A08EquipmentParam.bean.A08TbEquipmentParam"
+            resultType="com.enercomn.web.A08EquipmentParam.bean.A08TbEquipmentParam">
+        select
+            param.teps_id , param.module_unit, param.maintenance_parts
+        from
+            tb_equipment_param param
+        where
+            param.is_del=0
+        <if test="tbEquipmentAssetsId != null and tbEquipmentAssetsId!=''">
+            and tb_equipment_assets_id =  #{tbEquipmentAssetsId}
+        </if>
+        group by
+             param.module_unit, param.maintenance_parts
+    </select>
+
+</mapper>

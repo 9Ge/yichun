@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A03EquipmentSuppler.mapper.A03EquipmentSupplerMapperTK">
+
+    <select id="querySupplerAll" parameterType="com.enercomn.web.A03EquipmentSuppler.bean.A03EquipmentSupplerBean"
+            resultType="com.enercomn.web.A03EquipmentSuppler.bean.A03EquipmentSupplerBean">
+        select
+            tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,tb_equipment_suppler.tes_id,tb_equipment_suppler.name,
+            tb_equipment_suppler.equipment_id,tb_equipment_suppler.suppler_name,tb_equipment_suppler.tel_name,
+            tb_equipment_suppler.tel,tb_equipment_suppler.email,tb_equipment_suppler.remarks,tb_equipment_suppler.create_user,
+            tb_equipment_suppler.create_date,tb_equipment_suppler.update_user,tb_equipment_suppler.update_date,
+            tb_equipment_suppler.is_del
+        from tb_equipment_suppler
+        left join tb_equipment_assets
+        on tb_equipment_assets.tea_id= tb_equipment_suppler.equipment_id and tb_equipment_assets.is_del='0'
+        <where>
+            tb_equipment_suppler.is_del = '0'
+            <if test="equipmentCode != null and equipmentCode != ''">
+                and tb_equipment_assets.equipment_code like #{equipmentCode}
+            </if>
+            <if test="equipmentName != null and equipmentName != ''">
+                and tb_equipment_assets.equipment_name like #{equipmentName}
+            </if>
+        </where>
+
+
+    </select>
+
+</mapper>

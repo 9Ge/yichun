@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A11Failure.mapper.A11TbEquipmentFailureDetailMapper">
+    <resultMap id="BaseResultMap" type="com.enercomn.web.A11Failure.bean.A11TbEquipmentFailureDetail">
+        <id column="tefd_id" jdbcType="VARCHAR" property="tefdId" />
+        <result column="equipment_id" jdbcType="VARCHAR" property="equipmentId" />
+        <result column="failure_detail" jdbcType="VARCHAR" property="failureDetail" />
+        <result column="maintenance_measures" jdbcType="VARCHAR" property="maintenanceMeasures" />
+        <result column="reason" jdbcType="VARCHAR" property="reason" />
+        <result column="preventive_measure" jdbcType="VARCHAR" property="preventiveMeasure" />
+        <result column="is_solve" jdbcType="INTEGER" property="isSolve" />
+        <result column="tei_id" jdbcType="VARCHAR" property="teiId" />
+        <result column="parts_consume" jdbcType="VARCHAR" property="partsConsume" />
+        <result column="hour_consume" jdbcType="INTEGER" property="hourConsume" />
+        <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+        <result column="equipment_code" jdbcType="VARCHAR" property="equipmentCode" />
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName" />
+        <result column="category_pic" jdbcType="VARCHAR" property="categoryPic" />
+        <result column="failure_code" jdbcType="VARCHAR" property="failureCode" />
+        <collection property="a11TbEquipmentFailureReportList" ofType="com.enercomn.web.A11Failure.bean.A11TbEquipmentFailureReport">
+            <result column="equipment_id" jdbcType="VARCHAR" property="equipmentId" />
+            <result column="failure_content" jdbcType="VARCHAR" property="failureContent" />
+            <result column="tefd_id" jdbcType="VARCHAR" property="tefdId" />
+            <result column="report_unit" jdbcType="VARCHAR" property="reportUnit" />
+            <result column="failure_date" jdbcType="TIMESTAMP" property="failureDate" />
+            <result column="failure_position" jdbcType="VARCHAR" property="failurePosition" />
+            <result column="line" jdbcType="VARCHAR" property="line" />
+            <result column="handler" jdbcType="VARCHAR" property="handler" />
+            <result column="equipment_engineer" jdbcType="VARCHAR" property="equipmentEngineer" />
+            <result column="failure_date_slot" jdbcType="VARCHAR" property="failureDateSlot" />
+            <result column="down_date" jdbcType="TIMESTAMP" property="downDate" />
+            <result column="failure_measures" jdbcType="VARCHAR" property="failureMeasures" />
+            <result column="result" jdbcType="VARCHAR" property="result" />
+            <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+            <result column="reason" jdbcType="VARCHAR" property="reason" />
+            <result column="preventive_measure" jdbcType="VARCHAR" property="preventiveMeasure" />
+            <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+        </collection>
+    </resultMap>
+    <select id="queryFailureDetail" parameterType="com.enercomn.web.A11Failure.bean.A11TbEquipmentFailureDetail"
+        resultMap="BaseResultMap">
+         select
+             tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,
+             tb_equipment_failure_detail.tefd_id,tb_equipment_failure_detail.equipment_id,tb_equipment_failure_detail.failure_detail,
+             tb_equipment_failure_detail.maintenance_measures,tb_equipment_failure_detail.reason,
+             tb_equipment_failure_detail.preventive_measure,tb_equipment_failure_detail.is_solve,
+             tb_equipment_failure_detail.tei_id,tb_equipment_failure_detail.parts_consume,
+             tb_equipment_failure_detail.hour_consume,tb_equipment_failure_detail.remarks,
+             tb_equipment_failure_report.failure_content,tb_equipment_failure_report.report_unit,
+             tb_equipment_failure_report.failure_date,tb_equipment_failure_report.failure_position,
+             tb_equipment_failure_report.line,tb_equipment_failure_report.handler,
+             tb_equipment_failure_report.equipment_engineer,tb_equipment_failure_report.failure_date_slot,
+             tb_equipment_failure_report.down_date,tb_equipment_failure_report.failure_measures,tb_equipment_failure_report.result,
+             tb_equipment_failure_report.imgurl,tb_equipment_failure_report.reason,
+             tb_equipment_failure_report.preventive_measure,tb_equipment_failure_report.end_date,tb_equipment_failure_detail.category_pic,
+        tb_equipment_failure_detail.failure_code
+        from tb_equipment_failure_detail
+        left join tb_equipment_failure_report on tb_equipment_failure_report.tefd_id=tb_equipment_failure_detail.tefd_id
+        and tb_equipment_failure_detail.is_del=0
+        left join tb_equipment_assets on tb_equipment_assets.tea_id = tb_equipment_failure_detail.equipment_id
+        and tb_equipment_assets.is_del=0
+        where tb_equipment_failure_detail.is_del=0
+        <if test="equipmentCode != null and equipmentCode != ''">
+            and tb_equipment_assets.equipment_code like #{equipmentCode}
+        </if>
+        <if test="equipmentName != null and equipmentName != ''">
+            and equipment_name like #{equipmentName}
+        </if>
+    </select>
+</mapper>

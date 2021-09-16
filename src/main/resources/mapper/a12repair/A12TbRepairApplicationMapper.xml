@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A12Repair.mapper.A12TbRepairApplicationMapper">
+    <select id="queryRepairApplication" parameterType="com.enercomn.web.A12Repair.bean.A12TbRepairApplication"
+        resultType="com.enercomn.web.A12Repair.bean.A12TbRepairApplicationVo">
+        select
+            tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,
+            tb_repair_application.tra_id,tb_repair_application.equipment_id,
+            tb_repair_application.equipment_status,tb_repair_application.repair_objective,
+            tb_repair_application.applicant,tb_repair_application.status,
+            tb_repair_application.remarks,tb_repair_application.repair_code
+        from tb_repair_application
+        left join tb_equipment_assets on tb_repair_application.equipment_id=tb_equipment_assets.tea_id
+        and tb_equipment_assets.is_del=0
+        where tb_repair_application.is_del=0
+    </select>
+</mapper>

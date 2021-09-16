@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A12Repair.mapper.A12TbMaintenanceRecordLedgerMapper">
+
+
+    <select id="queryLedger" resultType="com.enercomn.web.A12Repair.bean.A12TbMaintenanceRecordLedgerVo"
+        parameterType="com.enercomn.web.A12Repair.bean.A12TbMaintenanceRecordLedger">
+        select
+            tb_maintenance_record_ledger.tmrl_id,tb_maintenance_record_ledger.tep_id,tb_maintenance_record_ledger.ter_id,tb_maintenance_record_ledger.material_num,
+            tb_maintenance_record_ledger.equipment_id,tb_maintenance_record_ledger.date,tb_maintenance_record_ledger.content,tb_maintenance_record_ledger.content_pic,
+            tb_maintenance_record_ledger.date_begin,tb_maintenance_record_ledger.date_end,tb_maintenance_record_ledger.hours,
+            tb_maintenance_record_ledger.repair_personnel,tb_maintenance_record_ledger.maintenance_source,
+            tb_maintenance_record_ledger.maintenance_number,tb_maintenance_record_ledger.remarks,
+            tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,tb_equipment_assets.equipment_model,
+            tb_equipment_material.code,tb_equipment_material.name,tb_equipment_material.model_no,
+        tb_maintenance_record_ledger.record_ledger_code,tb_maintenance_record_ledger.source_code
+        from tb_maintenance_record_ledger
+        left join tb_equipment_material on tb_maintenance_record_ledger.tep_id=tb_equipment_material.material_id and tb_equipment_material.is_del = '0'
+        left join tb_equipment_assets on tb_equipment_assets.tea_id=tb_maintenance_record_ledger.equipment_id and tb_equipment_assets.is_del='0'
+        <where>
+            tb_maintenance_record_ledger.is_del='0'
+            <if test="equipmentCode != null and equipmentCode != ''">
+                and tb_equipment_assets.equipment_code like #{equipmentCode}
+            </if>
+            <if test="equipmentName != null and equipmentName != ''">
+                and equipment_name like #{equipmentName}
+            </if>
+        </where>
+
+
+    </select>
+</mapper>

@@ -1,0 +1,87 @@
+server:
+  port: 8086
+  servlet:
+    context-path: /EfficientRoomService
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    first:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://47.103.37.95:3307/enercomnpro?useSSL=false&useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Hongkong&allowMultiQueries=true
+      username: root
+      password: enercomn2020
+    second:
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      url: jdbc:sqlserver://192.168.3.178;instanceName=ESERVER;integratedSecurity=false;DataBaseName=eServer
+      username: eServer
+      password: Password
+    primary:
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validation-query: SELECT 1 FROM DUAL
+      time-between-eviction-runs-millis: 300000
+      min-evictable-idle-time-millis: 1800000
+      initial-size: 5
+      max-active: 50
+      max-wait: 60000
+      min-idle: 5
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  jackson:
+    serialization:
+      indent_output: true
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/, classpath:/resources/,classpath:/static/, classpath:/public/,file:${file.uploadUrl}
+cache:
+  type: ehcache
+  ehcache:
+    config: ehcache.xml
+
+
+
+logging:
+  file: EfficientRoomService.log
+  level:
+    root :  info
+
+
+file:
+  uploadUrl :  E:/upload/
+  codeImageUrl :  CodeImage
+
+  mybatis-plus:
+    global-config:
+      db-config:
+        id-type: auto
+        field-strategy: not_empty
+        #驼峰下划线转换
+        column-underline: true
+        #逻辑删除配置
+        logic-delete-value: 0
+        logic-not-delete-value: 1
+        db-type: mysql
+      refresh: false
+    configuration:
+      map-underscore-to-camel-case: true
+      cache-enabled: false
+
+# 公众号配置(必填)
+#wx :
+#  mp :
+#    appId :  wxc24d7b12dffb4add
+#    secret :  a5bc3142d75372ca632f67d69057ab42
+#    token :  com.enercomn
+#    aesKey :  com.enercomn
+
+
+
+
+
+
+

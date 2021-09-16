@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A00_dict.mapper.A00TbDictMapper">
+    <resultMap id="BaseResultMap" type="com.enercomn.web.A00_dict.bean.A00TbDict">
+        <id column="dict_id" jdbcType="VARCHAR" property="dictId"/>
+        <result column="base_code" jdbcType="VARCHAR" property="baseCode"/>
+        <result column="base_name" jdbcType="VARCHAR" property="baseName"/>
+        <result column="key" jdbcType="VARCHAR" property="key"/>
+        <result column="value" jdbcType="VARCHAR" property="value"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="is_del" jdbcType="INTEGER" property="isDel"/>
+    </resultMap>
+
+    <insert id="saveDict" parameterType="com.enercomn.web.A00_dict.bean.A00TbDict">
+    insert into tb_dict (dict_id,base_code, base_name, `key`,
+      `value`, create_user, create_date, is_del
+      )
+    values (#{dictId,jdbcType=VARCHAR},#{baseCode,jdbcType=VARCHAR}, #{baseName,jdbcType=VARCHAR}, #{key,jdbcType=VARCHAR},
+      #{value,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}
+      )
+  </insert>
+
+    <sql id="Base_Column_List">
+    dict_id, base_code, base_name, `key`, `value`, create_user, create_date, update_user,
+    update_date, is_del
+  </sql>
+    <select id="queryByParam" parameterType="java.lang.String"
+            resultType="com.enercomn.web.A00_dict.bean.A00TbDictResult">
+        select
+        base_code, base_name, `key`,`value`
+        from
+        tb_dict
+        where
+        <if test="baseCode !=null and baseCode !='' ">
+            base_code = #{baseCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="queryByKey" parameterType="java.lang.String"
+            resultType="com.enercomn.web.A00_dict.bean.A00TbDictResult">
+        select
+        base_code, base_name, `key`,`value`
+        from
+        tb_dict
+        where 1=1
+        <if test="key !=null and key !='' ">
+            and `key` = #{key,jdbcType=VARCHAR}
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="queryByValue" parameterType="java.lang.String"
+            resultType="com.enercomn.web.A00_dict.bean.A00TbDictResult">
+        select
+        `key`
+        from
+        tb_dict
+        where 1=1
+        <if test="value !=null and value !='' ">
+            and `value` like #{value,jdbcType=VARCHAR}
+        </if>
+        limit 0,1
+    </select>
+
+</mapper>

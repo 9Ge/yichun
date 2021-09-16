@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A01EquipmentManagement.mapper.A01EquipmentAsstsMapperTK">
+    <select id="queryEquipment" parameterType="com.enercomn.web.A01EquipmentManagement.bean.A01EquipmentAssetsBean"
+            resultMap="BaseResultMap">
+        select
+        tb_equipment_assets.tea_id,tb_equipment_assets.equipment_code,tb_equipment_assets.equipment_name,
+        tb_equipment_assets.equipment_model,tb_equipment_assets.department,tb_equipment_assets.installa_site,
+        tb_equipment_assets.production_line,tb_equipment_assets.equipment_no,tb_equipment_assets.manufacture,
+        tb_equipment_assets.factory_no,tb_equipment_assets.factory_date,tb_equipment_assets.equipment_suppler,
+        tb_equipment_assets.weight,tb_equipment_assets.power,tb_equipment_assets.equipment_type,tb_equipment_assets.use_state,
+        tb_equipment_assets.resume_info,tb_equipment_assets.use_date,tb_equipment_assets.contract_no,tb_equipment_assets.contract_name,
+        tb_equipment_assets.remarks,
+        tb_equipment_material.name,tb_equipment_material.code,
+        tb_equipment_material_relation.capacity,tb_equipment_material_relation.unit,
+        tb_equipment_material_relation.tb_equipment_assets_id,tb_equipment_material_relation.material_id
+        from tb_equipment_assets tb_equipment_assets
+        left join tb_equipment_material_relation on
+        tb_equipment_assets.tea_id=tb_equipment_material_relation.tb_equipment_assets_id
+        and tb_equipment_material_relation.is_del=0
+        left join tb_equipment_material on tb_equipment_material.material_id=tb_equipment_material_relation.material_id
+        and tb_equipment_material.is_del=0
+        <where>
+            tb_equipment_assets.is_del =0
+            <if test="equipmentCode != null and equipmentCode != ''">
+               and tb_equipment_assets.equipment_code like #{equipmentCode}
+            </if>
+            <if test="equipmentName != null and equipmentName != ''">
+                and tb_equipment_assets.equipment_name like #{equipmentName}
+            </if>
+        </where>
+
+
+    </select>
+
+    <resultMap id="BaseResultMap" type="com.enercomn.web.A01EquipmentManagement.bean.A01EquipmentAssetsBean">
+        <id column="tea_id" jdbcType="VARCHAR" property="teaId"/>
+        <result column="equipment_code" jdbcType="VARCHAR" property="equipmentCode"/>
+        <result column="equipment_name" jdbcType="VARCHAR" property="equipmentName"/>
+        <result column="equipment_model" jdbcType="VARCHAR" property="equipmentModel"/>
+        <result column="department" jdbcType="VARCHAR" property="department"/>
+        <result column="installa_site" jdbcType="VARCHAR" property="installaSite"/>
+        <result column="production_line" jdbcType="VARCHAR" property="productionLine"/>
+        <result column="equipment_no" jdbcType="VARCHAR" property="equipmentNo"/>
+        <result column="manufacture" jdbcType="VARCHAR" property="manufacture"/>
+        <result column="factory_no" jdbcType="VARCHAR" property="factoryNo"/>
+        <result column="factory_date" jdbcType="TIMESTAMP" property="factoryDate"/>
+        <result column="equipment_suppler" jdbcType="VARCHAR" property="equipmentSuppler"/>
+        <result column="weight" jdbcType="DOUBLE" property="weight"/>
+        <result column="power" jdbcType="DOUBLE" property="power"/>
+        <result column="equipment_type" jdbcType="INTEGER" property="equipmentType"/>
+        <result column="use_state" jdbcType="INTEGER" property="useState"/>
+        <result column="resume_info" jdbcType="VARCHAR" property="resumeInfo"/>
+        <result column="use_date" jdbcType="TIMESTAMP" property="useDate"/>
+        <result column="contract_no" jdbcType="VARCHAR" property="contractNo"/>
+        <result column="contract_name" jdbcType="VARCHAR" property="contractName"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <collection property="relationList"
+                    ofType="com.enercomn.web.A01EquipmentManagement.bean.A01TbEquipmentMaterialRelation">
+            <result column="tb_equipment_assets_id" jdbcType="VARCHAR" property="tbEquipmentAssetsId"/>
+            <result column="material_id" jdbcType="VARCHAR" property="materialId"/>
+            <result column="capacity" jdbcType="VARCHAR" property="capacity"/>
+            <result column="unit" jdbcType="VARCHAR" property="unit"/>
+            <result column="code" jdbcType="VARCHAR" property="code"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
+        </collection>
+    </resultMap>
+</mapper>

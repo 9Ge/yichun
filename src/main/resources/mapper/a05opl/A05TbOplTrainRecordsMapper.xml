@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A05OPLClass.mapper.A05TbOplTrainRecordsMapper">
+    <resultMap id="BaseResultMap" type="com.enercomn.web.A05OPLClass.bean.A05TbOplTrainRecords">
+        <id column="totr_id" jdbcType="VARCHAR" property="totrId"/>
+        <result column="toc_id" jdbcType="VARCHAR" property="tocId"/>
+        <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+        <result column="train_date" jdbcType="TIMESTAMP" property="trainDate"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="is_del" jdbcType="INTEGER" property="isDel"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        totr_id, toc_id, user_id, train_date, create_user, create_date, update_user, update_date,
+        is_del
+     </sql>
+    <insert id="saveBatch" parameterType="java.util.List">
+        insert into tb_opl_train_records
+        (totr_id, toc_id, user_id, train_date, create_user, create_date, is_del)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.totrId,jdbcType=VARCHAR},
+            #{item.tocId,jdbcType=VARCHAR},
+            #{item.userId,jdbcType=VARCHAR},
+            #{item.trainDate,jdbcType=TIMESTAMP},
+            #{item.createUser,jdbcType=VARCHAR},
+            #{item.createDate,jdbcType=TIMESTAMP},
+            #{item.isDel,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.enercomn.web.A05OPLClass.bean.A05TbOplTrainRecords">
+        update tb_opl_train_records
+        <set>
+            <if test="tocId != null">
+                toc_id = #{tocId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="trainDate != null">
+                train_date = #{trainDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                update_date = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isDel != null">
+                is_del = #{isDel,jdbcType=INTEGER},
+            </if>
+        </set>
+        where totr_id = #{totrId,jdbcType=VARCHAR}
+    </update>
+
+    <update id="deleteByPrimaryKey" parameterType="com.enercomn.web.A05OPLClass.bean.A05TbOplTrainRecords">
+        update tb_opl_train_records
+        <set>
+            <if test="isDel != null">
+                is_del = #{isDel,jdbcType=INTEGER},
+            </if>
+        </set>
+        where totr_id = #{totrId,jdbcType=VARCHAR}
+    </update>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_opl_train_records
+        where totr_id = #{totrId,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByParam" parameterType="com.enercomn.web.A05OPLClass.bean.A05TbOplTrainRecords"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_opl_train_records
+        <where>
+            is_del = 0
+            <if test="tocId != null and tocId != ''">
+                and   toc_id = #{tocId,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null and userId != ''">
+                and    user_id = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="trainDate != null and trainDate != ''">
+                and    train_date = #{trainDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="totrId != null and totr_id != ''">
+                and  totr_id = #{totrId,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <update id="deleteBatchByPrimaryKey" parameterType="com.enercomn.web.A05OPLClass.bean.A05TbOplTrainRecords">
+        update tb_opl_train_records
+        <set>
+            is_del = 1,
+        </set>
+        where
+        totr_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.totrId,jdbcType=VARCHAR}
+        </foreach>
+
+    </update>
+    <delete id="removeBatchByPrimaryKey" parameterType="com.enercomn.web.A05OPLClass.bean.A05TbOplTrainRecords">
+        delete from tb_opl_train_records
+         where
+        totr_id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.totrId,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <insert id="saveOrUpdateBatch" parameterType="java.util.List">
+        replace into tb_opl_train_records
+        (totr_id, toc_id, user_id, train_date, is_del)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.totrId,jdbcType=VARCHAR},
+            #{item.tocId,jdbcType=VARCHAR},
+            #{item.userId,jdbcType=VARCHAR},
+            #{item.trainDate,jdbcType=TIMESTAMP},
+            #{item.isDel,jdbcType=INTEGER})
+        </foreach>
+    </insert>
+    <update id="updateBatchByPrimaryKey" parameterType="java.util.List">
+
+        <foreach collection="list" item="item" separator=";">
+            <if test="item.totrId != null">
+                update tb_opl_train_records
+                <set>
+                    <if test="item.tocId != null">
+                        toc_id = #{item.tocId,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.userId != null">
+                        user_id = #{item.userId,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.trainDate != null">
+                        train_date = #{item.trainDate,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.createUser != null">
+                        create_user = #{item.createUser,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.createDate != null">
+                        create_date = #{item.createDate,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.updateUser != null">
+                        update_user = #{item.updateUser,jdbcType=VARCHAR},
+                    </if>
+                    <if test="item.updateDate != null">
+                        update_date = #{item.updateDate,jdbcType=TIMESTAMP},
+                    </if>
+                    <if test="item.isDel != null">
+                        is_del = #{item.isDel,jdbcType=INTEGER},
+                    </if>
+                </set>
+                where
+                totr_id = #{item.totrId,jdbcType=VARCHAR}
+            </if>
+        </foreach>
+    </update>
+</mapper>

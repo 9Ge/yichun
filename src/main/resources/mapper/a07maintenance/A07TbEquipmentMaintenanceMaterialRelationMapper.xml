@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.enercomn.web.A07EquipmentMaintenance.mapper.A07TbEquipmentMaintenanceRelationMapper">
+  <resultMap id="BaseResultMap" type="com.enercomn.web.A07EquipmentMaintenance.bean.A07TbEquipmentMaintenanceMaterialRelation">
+    <id column="temmr_id" jdbcType="VARCHAR" property="temmrId" />
+    <result column="tb_equipment_material_id" jdbcType="VARCHAR" property="tbEquipmentMaterialId" />
+    <result column="material_num" jdbcType="INTEGER" property="materialNum" />
+    <result column="maintenance_id" jdbcType="VARCHAR" property="maintenanceId" />
+  </resultMap>
+  <insert id="saveBatch" parameterType="java.util.List">
+    insert into tb_equipment_maintenance_material_relation (temmr_id,tb_equipment_material_id, material_num,
+      maintenance_id)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.temmrId,jdbcType=VARCHAR},#{item.tbEquipmentMaterialId,jdbcType=VARCHAR}, #{item.materialNum,jdbcType=INTEGER},
+      #{item.maintenanceId,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+</mapper>
